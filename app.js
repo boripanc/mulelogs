@@ -1,5 +1,5 @@
 const express = require('express');
-const db = require("../modules/pg");
+const db = require("./modules/pg");
 var format = require("date-format");
 const app = express()
 const port = 3000
