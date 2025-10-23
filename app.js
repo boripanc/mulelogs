@@ -1,10 +1,16 @@
-const express = require('express')
+const express = require('express');
+const db = require("../modules/pg");
+var format = require("date-format");
 const app = express()
 const port = 3000
 
-app.post('/', (req, res) => {
+app.post('/logs', async (req, res) => {
     console.log(req);
-  res.send('success')
+  var x = await db.none(
+    "INSERT INTO public.analyticslogs "+
+"(apiid, apiversionid, orgid, hostid, clientid, transactionid, receivedts, repliedts, clientip, verb, \"path\", statuscode, useragent, requestbytes, responsebytes, requestdisposition, policyviolation, apiname, apiversion, instancename, applicationname, eventid, flowname, muleappname, deploymenttype) "+
+"VALUES(${apiId}, ${apiVersionId},${orgId},${hostId},${clientId},${transactionId},${receivedTs},${repliedTs},${clientIp},${verb},${path},${statusCode},${userAgent},${requestBytes},${responseBytes},${requestDisposition},${policyViolation},${apiName},${apiVersion},${instanceName},${applicationName},${eventId},${flowName},${muleAppName},${deploymentType});",req.body  );
+  res.send({ status: "ok" });
 })
 
 app.listen(port, () => {
